@@ -1,0 +1,3 @@
+[submodule "go-shortener-links"]
+	path = go-shortener-links
+	url = git@github.com:muzyk0/go-shortener-links.git
