@@ -26,9 +26,10 @@ var usersDB = map[string]User{
 
 func TestUserViewHandler(t *testing.T) {
 	type want struct {
-		code        int
-		contentType string
-		user        User
+		code                 int
+		contentType          string
+		user                 User
+		expectedErrorMessage string
 	}
 	tests := []struct {
 		name    string
@@ -47,6 +48,7 @@ func TestUserViewHandler(t *testing.T) {
 					FirstName: "Sasha",
 					LastName:  "Popov",
 				},
+				expectedErrorMessage: "",
 			},
 			usersDB: usersDB,
 		},
@@ -61,12 +63,13 @@ func TestUserViewHandler(t *testing.T) {
 					FirstName: "Sasha",
 					LastName:  "Popov",
 				},
+				expectedErrorMessage: "user not found\n",
 			},
 			usersDB: usersDB,
 		},
 		{
 			name:    "user_id is empty",
-			request: "/users?",
+			request: "/users?user_id=",
 			want: want{
 				code:        400,
 				contentType: "application/json",
@@ -75,6 +78,7 @@ func TestUserViewHandler(t *testing.T) {
 					FirstName: "Sasha",
 					LastName:  "Popov",
 				},
+				expectedErrorMessage: "user_id is empty\n",
 			},
 			usersDB: usersDB,
 		},
@@ -109,6 +113,10 @@ func TestUserViewHandler(t *testing.T) {
 				assert.Equal(t, test.want.user, user)
 			}
 
+			if res.StatusCode == http.StatusNotFound {
+				// assert.JSONEq помогает сравнить две JSON-строки
+				assert.Equal(t, test.want.expectedErrorMessage, w.Body.String(), "Тело ответа не совпадает с ожидаемым")
+			}
 		})
 	}
 }
