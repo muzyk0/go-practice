@@ -1,6 +1,10 @@
 package fullname
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestFullname(t *testing.T) {
 	type fields struct {
@@ -43,7 +47,12 @@ func TestFullname(t *testing.T) {
 				FirstName: tt.fields.FirstName,
 				LastName:  tt.fields.LastName,
 			}
-			if got := u.FullName(); got != tt.want {
+
+			got := u.FullName()
+
+			assert.Equal(t, got, tt.want)
+
+			if got != tt.want {
 				t.Errorf("FullName() = %v, want %v", got, tt.want)
 			}
 		})

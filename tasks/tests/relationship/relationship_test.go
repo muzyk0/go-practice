@@ -2,6 +2,9 @@ package relationship
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type NewPercon struct {
@@ -61,9 +64,17 @@ func TestAddNew(t *testing.T) {
 				Members: test.existedMembers,
 			}
 			err := f.AddNew(test.newPerson.r, test.newPerson.p)
-			if (err != nil) != test.ok {
-				t.Errorf("AddNew() error = %v, ok %v", err, test.ok)
+
+			if test.ok {
+				// обязательно проверяем на ошибки
+				require.NoError(t, err)
+				// дополнительно проверяем, что новый человек был добавлен
+				assert.Contains(t, f.Members, test.newPerson.r)
+				return
 			}
+
+			assert.Error(t, err)
+
 		})
 	}
 }
