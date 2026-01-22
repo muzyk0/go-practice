@@ -3,11 +3,12 @@ package main
 
 import (
 	"encoding/json"
+	"net/http"
+	"strings"
+
 	"github.com/muzyk0/alice-skill/internal/logger"
 	"github.com/muzyk0/alice-skill/internal/models"
 	"go.uber.org/zap"
-	"net/http"
-	"strings"
 )
 
 func gzipMiddleware(h http.HandlerFunc) http.HandlerFunc {
