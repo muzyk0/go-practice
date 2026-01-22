@@ -14,7 +14,7 @@ setup: ## Set up the development environment
 .PHONY: backend
 backend: ## Start the backend server
 	@echo "Starting backend server..."
-	go run cmd/skill/main.go
+	go run cmd/skill/main.go cmd/skill/flags.go cmd/skill/gzip.go
 
 .PHONY: format
 format: ## Format
@@ -34,5 +34,5 @@ lint-backend: ## Run golangci-lint
 .PHONY: build
 build: ## Build all components
 	@echo "Building all components..."
-	go build -o bin/server cmd/skill/main.go
+	go build -o bin/server cmd/skill/main.go cmd/skill/flags.go cmd/skill/gzip.go
 
